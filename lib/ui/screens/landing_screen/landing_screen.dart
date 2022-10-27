@@ -24,6 +24,7 @@ class _LandingScreenState extends State<LandingScreen> {
   late final Box contactBox;
   @override
   void initState() {
+    basicController.getTopicData();
     contactBox = Hive.box('testBox');
 
     super.initState();
