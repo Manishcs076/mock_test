@@ -258,7 +258,7 @@ class _NewTestScreenCreationScreenState
                             }
                           : () {
                               _addInfo();
-                              Get.offAll(LandingScreen());
+                              Get.offAll(const LandingScreen());
                             },
                       style: ElevatedButton.styleFrom(
                         shape: const RoundedRectangleBorder(
