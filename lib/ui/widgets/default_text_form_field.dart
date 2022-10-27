@@ -76,7 +76,7 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
 
       maxLength: widget.maxLength,
       style: TextStyle(
-        fontSize: 12.sp,
+        fontSize: 18.sp,
         color: const Color.fromARGB(
           204,
           18,
@@ -97,7 +97,7 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
         contentPadding: widget.contentPadding,
         hintText: widget.hintText,
         hintStyle: TextStyle(
-          fontSize: 12.sp,
+          fontSize: 16.sp,
           color: const Color.fromARGB(
             204,
             86,
