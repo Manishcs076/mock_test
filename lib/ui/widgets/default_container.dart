@@ -1,6 +1,7 @@
+// ignore_for_file: must_be_immutable, duplicate_ignore
+
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 /// DefaultContainer - custom container for reusability
 class DefaultContainer extends StatefulWidget {
   DefaultContainer({

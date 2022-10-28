@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import '../create_new_test_screen/create_new_test_screen.dart';
 import 'package:lottie/lottie.dart';
 
+/// LandingScreen - initial page of this application
 class LandingScreen extends StatefulWidget {
   static const String id = '/landing_screen';
   const LandingScreen({super.key});

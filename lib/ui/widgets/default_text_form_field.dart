@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // ignore: must_be_immutable
 ///DefaultTextFormField - custom textformfield for reusability
+// ignore: must_be_immutable
 class DefaultTextFormField extends StatefulWidget {
   DefaultTextFormField(
       {Key? key,
