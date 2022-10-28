@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
+/// DefaultContainer - custom container for reusability
 class DefaultContainer extends StatefulWidget {
   DefaultContainer({
     Key? key,

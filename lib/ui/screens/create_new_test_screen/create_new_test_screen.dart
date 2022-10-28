@@ -28,6 +28,8 @@ class _NewTestScreenCreationScreenState
   @override
   void initState() {
     box = Hive.box('testBox');
+
+    ///Calling getTopicData() to fetch all the list data
     basicController.getTopicData();
     basicController.newTestTitle.value = '';
     super.initState();
@@ -39,11 +41,12 @@ class _NewTestScreenCreationScreenState
     super.dispose();
   }
 
+  ///_addInfo - storing created test in local storage using hive
   _addInfo() async {
     CreatedTestModel newPerson =
         CreatedTestModel(basicController.newTestTitle.value, DateTime.now());
     box.add(newPerson);
-    print('Info added to box!');
+    print('Test added to box!');
   }
 
   @override
@@ -123,117 +126,140 @@ class _NewTestScreenCreationScreenState
                   height: 25.h,
                 ),
                 Obx(
-                  () => Expanded(
-                    child: ListView.builder(
-                      physics: const ScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: basicController.topicDataList.length,
-                      itemBuilder: (BuildContext context, index) {
-                        return Padding(
-                          padding: EdgeInsets.only(
-                            bottom: 10.r,
+                  () => basicController.isLoading.isTrue
+                      ? Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 150.r),
+
+                            ///CircularProgressIndicator for api response waiting
+                            child: const CircularProgressIndicator(),
                           ),
-                          child: Theme(
-                            data: ThemeData().copyWith(
-                              dividerColor: Colors.transparent,
-                            ),
-                            child: ExpansionTile(
-                              leading: Obx(() => Checkbox(
-                                    value: basicController.topicDataList[index]
-                                        .titleChecked.value,
-                                    onChanged: (val) {
-                                      basicController.topicDataList[index]
-                                          .titleChecked.value = val!;
-                                      if (val) {
-                                        basicController.topicDataList[index]
-                                            .selectedConcepts
-                                            .clear();
-                                        basicController.topicDataList[index]
-                                            .selectedConcepts
-                                            .addAll(basicController
-                                                .topicDataList[index]
-                                                .concepts!);
-                                      } else {
-                                        basicController.topicDataList[index]
-                                            .selectedConcepts
-                                            .clear();
-                                      }
-                                    },
-                                  )),
-                              title: Row(
-                                children: [
-                                  Text(basicController
-                                      .topicDataList[index].topicName
-                                      .toString())
-                                ],
-                              ),
-                              children: List.generate(
-                                  basicController.topicDataList[index].concepts!
-                                      .length, (innerIndex) {
-                                return ListTile(
-                                  contentPadding: EdgeInsets.only(left: 40.w),
-                                  onTap: () {
-                                    if (basicController
-                                        .topicDataList[index].selectedConcepts
-                                        .contains(basicController
-                                            .topicDataList[index]
-                                            .concepts![innerIndex])) {
-                                      basicController
-                                          .topicDataList[index].selectedConcepts
-                                          .removeWhere((element) =>
-                                              element ==
+                        )
+                      : Expanded(
+                          /// Generating ListTile within ExpensionTile according to fetched data
+                          child: ListView.builder(
+                            physics: const ScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: basicController.topicDataList.length,
+                            itemBuilder: (BuildContext context, index) {
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                  bottom: 10.r,
+                                ),
+                                child: Theme(
+                                  data: ThemeData().copyWith(
+                                    dividerColor: Colors.transparent,
+                                  ),
+                                  child: ExpansionTile(
+                                    leading: Obx(() => Checkbox(
+                                          value: basicController
+                                              .topicDataList[index]
+                                              .titleChecked
+                                              .value,
+                                          onChanged: (val) {
+                                            basicController.topicDataList[index]
+                                                .titleChecked.value = val!;
+                                            if (val) {
                                               basicController
                                                   .topicDataList[index]
-                                                  .concepts![innerIndex]);
-                                    } else {
-                                      basicController
-                                          .topicDataList[index].selectedConcepts
-                                          .add(basicController
-                                              .topicDataList[index]
-                                              .concepts![innerIndex]);
-                                    }
-                                    print(
-                                        "${basicController.topicDataList[index].concepts![innerIndex].toString()} tapped");
-                                  },
-                                  leading: Obx(() => Checkbox(
-                                      value: basicController
-                                          .topicDataList[index].selectedConcepts
-                                          .contains(basicController
-                                              .topicDataList[index]
-                                              .concepts![innerIndex]),
-                                      onChanged: (isClicked) {
-                                        if (basicController.topicDataList[index]
-                                            .selectedConcepts
-                                            .contains(basicController
-                                                .topicDataList[index]
-                                                .concepts![innerIndex])) {
-                                          basicController.topicDataList[index]
-                                              .selectedConcepts
-                                              .removeWhere((element) =>
-                                                  element ==
-                                                  basicController
-                                                      .topicDataList[index]
-                                                      .concepts![innerIndex]);
-                                        } else {
-                                          basicController.topicDataList[index]
-                                              .selectedConcepts
-                                              .add(basicController
+                                                  .selectedConcepts
+                                                  .clear();
+                                              basicController
                                                   .topicDataList[index]
-                                                  .concepts![innerIndex]);
-                                        }
-                                      })),
-                                  title: Text(basicController
-                                      .topicDataList[index]
-                                      .concepts![innerIndex]
-                                      .toString()),
-                                );
-                              }),
-                            ),
+                                                  .selectedConcepts
+                                                  .addAll(basicController
+                                                      .topicDataList[index]
+                                                      .concepts!);
+                                            } else {
+                                              basicController
+                                                  .topicDataList[index]
+                                                  .selectedConcepts
+                                                  .clear();
+                                            }
+                                          },
+                                        )),
+                                    title: Row(
+                                      children: [
+                                        Text(basicController
+                                            .topicDataList[index].topicName
+                                            .toString())
+                                      ],
+                                    ),
+                                    children: List.generate(
+                                        basicController.topicDataList[index]
+                                            .concepts!.length, (innerIndex) {
+                                      return ListTile(
+                                        contentPadding:
+                                            EdgeInsets.only(left: 40.w),
+                                        onTap: () {
+                                          if (basicController
+                                              .topicDataList[index]
+                                              .selectedConcepts
+                                              .contains(basicController
+                                                  .topicDataList[index]
+                                                  .concepts![innerIndex])) {
+                                            basicController.topicDataList[index]
+                                                .selectedConcepts
+                                                .removeWhere((element) =>
+                                                    element ==
+                                                    basicController
+                                                        .topicDataList[index]
+                                                        .concepts![innerIndex]);
+                                          } else {
+                                            basicController.topicDataList[index]
+                                                .selectedConcepts
+                                                .add(basicController
+                                                    .topicDataList[index]
+                                                    .concepts![innerIndex]);
+                                          }
+                                          print(
+                                              "${basicController.topicDataList[index].concepts![innerIndex].toString()} tapped");
+                                        },
+                                        leading: Obx(() => Checkbox(
+                                            value: basicController
+                                                .topicDataList[index]
+                                                .selectedConcepts
+                                                .contains(basicController
+                                                    .topicDataList[index]
+                                                    .concepts![innerIndex]),
+                                            onChanged: (isClicked) {
+                                              if (basicController
+                                                  .topicDataList[index]
+                                                  .selectedConcepts
+                                                  .contains(basicController
+                                                      .topicDataList[index]
+                                                      .concepts![innerIndex])) {
+                                                basicController
+                                                    .topicDataList[index]
+                                                    .selectedConcepts
+                                                    .removeWhere((element) =>
+                                                        element ==
+                                                        basicController
+                                                                .topicDataList[
+                                                                    index]
+                                                                .concepts![
+                                                            innerIndex]);
+                                              } else {
+                                                basicController
+                                                    .topicDataList[index]
+                                                    .selectedConcepts
+                                                    .add(basicController
+                                                        .topicDataList[index]
+                                                        .concepts![innerIndex]);
+                                              }
+                                            })),
+                                        title: Text(basicController
+                                            .topicDataList[index]
+                                            .concepts![innerIndex]
+                                            .toString()),
+                                      );
+                                    }),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
-                  ),
+                        ),
                 ),
               ],
             ),
