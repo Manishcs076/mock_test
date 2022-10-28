@@ -1,9 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mock_test_app">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    android:usesCleartextTraffic="true"
    <application
         android:label="mock_test_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        android:usesCleartextTraffic="true"
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -10,8 +10,9 @@ BaseClient baseClient = BaseClient();
 class BasicController extends GetxController {
   RxString newTestTitle = ''.obs;
   RxList<TopicDataModel> topicDataList = <TopicDataModel>[].obs;
-  getTopicData() async {
+  Future<List?> getTopicData() async {
     List<TopicDataModel>? topicData = await AddServiceLeadApi.fetchTopicData();
     topicDataList.value = topicData!;
+    return topicData;
   }
 }

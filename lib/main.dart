@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mock_test_app/controllers/basic_controller.dart';
 import 'package:mock_test_app/ui/screens/landing_screen/landing_screen.dart';
@@ -51,9 +50,6 @@ class MyApp extends StatelessWidget {
             GetPage(
               name: NewTestScreenCreationScreen.id,
               page: () => const NewTestScreenCreationScreen(),
-              transition: Transition.rightToLeft,
-              transitionDuration: const Duration(milliseconds: 400),
-              curve: Curves.fastOutSlowIn,
             ),
           ],
         );

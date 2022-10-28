@@ -3,14 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:mock_test_app/ui/widgets/default_container.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
-import '../../../models/created_test_model.dart';
 import '../create_new_test_screen/create_new_test_screen.dart';
+import 'package:lottie/lottie.dart';
 
 class LandingScreen extends StatefulWidget {
   static const String id = '/landing_screen';
@@ -28,11 +26,6 @@ class _LandingScreenState extends State<LandingScreen> {
     contactBox = Hive.box('testBox');
 
     super.initState();
-  }
-
-  _deleteInfo(int index) {
-    contactBox.deleteAt(index);
-    print('Item deleted from box at index: $index');
   }
 
   @override
@@ -68,15 +61,15 @@ class _LandingScreenState extends State<LandingScreen> {
                       ),
                     ),
                     Container(
-                      color: Colors.black,
+                      color: Colors.black12,
                       height: 120.h,
                       width: 220.w,
-                      child: const Center(
-                        child: Text(
-                          "Image",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                      child: Center(
+                        child: Lottie.asset(
+                          'assets/images/student_lottie.json',
+                          width: 200,
+                          height: 200,
+                          fit: BoxFit.fill,
                         ),
                       ),
                     ),
@@ -130,110 +123,108 @@ class _LandingScreenState extends State<LandingScreen> {
                 ),
                 child: Column(
                   children: [
-                    Expanded(
-                      child: ValueListenableBuilder(
-                        valueListenable: contactBox.listenable(),
-                        builder: (context, Box box, widget) {
-                          if (box.isEmpty) {
-                            return const Center(
-                              child: Text('Empty'),
-                            );
-                          } else {
-                            return ListView.builder(
-                              physics: const ScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: box.length,
-                              itemBuilder: (BuildContext context, index) {
-                                var currentBox = box;
-                                var testData = currentBox.getAt(index)!;
-                                final DateTime now = testData.createdDate;
-                                String formattedTime =
-                                    DateFormat('kk:mm:a').format(now);
-                                String dateFormat = Jiffy(now).yMMMMd;
+                    ValueListenableBuilder(
+                      valueListenable: contactBox.listenable(),
+                      builder: (context, Box box, widget) {
+                        if (box.isEmpty) {
+                          return const Center(
+                            child: Text('No test create'),
+                          );
+                        } else {
+                          return ListView.builder(
+                            physics: const ScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: box.length,
+                            itemBuilder: (BuildContext context, index) {
+                              var currentBox = box;
+                              var testData = currentBox.getAt(index)!;
+                              final DateTime now = testData.createdDate;
+                              String formattedTime =
+                                  DateFormat('kk:mm:a').format(now);
+                              String dateFormat = Jiffy(now).yMMMMd;
 
-                                return Padding(
-                                  padding: EdgeInsets.only(
-                                    bottom: 30.r,
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                  bottom: 30.r,
+                                ),
+                                child: DefaultContainer(
+                                  containerColor: Colors.white,
+                                  height: 100.h,
+                                  width: MediaQuery.of(context).size.width.w,
+                                  borderWidth: 0.5.r,
+                                  borderColor: const Color.fromARGB(
+                                    255,
+                                    203,
+                                    203,
+                                    203,
                                   ),
-                                  child: DefaultContainer(
-                                    containerColor: Colors.white,
-                                    height: 100.h,
-                                    width: MediaQuery.of(context).size.width.w,
-                                    borderWidth: 0.5.r,
-                                    borderColor: const Color.fromARGB(
-                                      255,
-                                      203,
-                                      203,
-                                      203,
+                                  boxShadowColor: Colors.transparent,
+                                  boxOffset: const Offset(
+                                    0,
+                                    0,
+                                  ),
+                                  blurRadius: 0,
+                                  spreadRadius: 0,
+                                  borderBottomLeftRadius: 18.r,
+                                  borderBottomRightRadius: 18.r,
+                                  borderTopLeftRadius: 18.r,
+                                  borderTopRightRadius: 18.r,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(
+                                      12.0,
                                     ),
-                                    boxShadowColor: Colors.transparent,
-                                    boxOffset: const Offset(
-                                      0,
-                                      0,
-                                    ),
-                                    blurRadius: 0,
-                                    spreadRadius: 0,
-                                    borderBottomLeftRadius: 18.r,
-                                    borderBottomRightRadius: 18.r,
-                                    borderTopLeftRadius: 18.r,
-                                    borderTopRightRadius: 18.r,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(
-                                        12.0,
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                testData.testName,
-                                                style: TextStyle(
-                                                  fontSize: 18.sp,
-                                                  fontWeight: FontWeight.w700,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              testData.testName,
+                                              style: TextStyle(
+                                                fontSize: 18.sp,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              "Created on ",
+                                              style: TextStyle(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                            Text(
+                                              "$dateFormat $formattedTime",
+                                              style: TextStyle(
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w400,
+                                                color: const Color.fromARGB(
+                                                  255,
+                                                  101,
+                                                  101,
+                                                  101,
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              Text(
-                                                "Created on ",
-                                                style: TextStyle(
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                              ),
-                                              Text(
-                                                "${dateFormat} ${formattedTime}",
-                                                style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: const Color.fromARGB(
-                                                    255,
-                                                    101,
-                                                    101,
-                                                    101,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
                                     ),
                                   ),
-                                );
-                              },
-                            );
-                          }
-                        },
-                      ),
+                                ),
+                              );
+                            },
+                          );
+                        }
+                      },
                     ),
                   ],
                 ),

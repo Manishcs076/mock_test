@@ -46,13 +46,6 @@ class _NewTestScreenCreationScreenState
     print('Info added to box!');
   }
 
-  String? _fieldValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Field can\'t be empty';
-    }
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,77 +123,56 @@ class _NewTestScreenCreationScreenState
                   height: 25.h,
                 ),
                 Obx(
-                  () => ListView.builder(
-                    physics: const ScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: basicController.topicDataList.length,
-                    itemBuilder: (BuildContext context, index) {
-                      return Padding(
-                        padding: EdgeInsets.only(
-                          bottom: 10.r,
-                        ),
-                        child: ExpansionTile(
-                          leading: Obx(() => Checkbox(
-                                value: basicController
-                                    .topicDataList[index].titleChecked.value,
-                                onChanged: (val) {
-                                  basicController.topicDataList[index]
-                                      .titleChecked.value = val!;
-                                  if (val) {
-                                    basicController
-                                        .topicDataList[index].selectedConcepts
-                                        .clear();
-                                    basicController
-                                        .topicDataList[index].selectedConcepts
-                                        .addAll(basicController
-                                            .topicDataList[index].concepts!);
-                                  } else {
-                                    basicController
-                                        .topicDataList[index].selectedConcepts
-                                        .clear();
-                                  }
-                                },
-                              )),
-                          title: Row(
-                            children: [
-                              Text(basicController
-                                  .topicDataList[index].topicName
-                                  .toString())
-                            ],
+                  () => Expanded(
+                    child: ListView.builder(
+                      physics: const ScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: basicController.topicDataList.length,
+                      itemBuilder: (BuildContext context, index) {
+                        return Padding(
+                          padding: EdgeInsets.only(
+                            bottom: 10.r,
                           ),
-                          children: List.generate(
-                              basicController.topicDataList[index].concepts!
-                                  .length, (innerIndex) {
-                            return ListTile(
-                              contentPadding: EdgeInsets.only(left: 40.w),
-                              onTap: () {
-                                if (basicController
-                                    .topicDataList[index].selectedConcepts
-                                    .contains(basicController
-                                        .topicDataList[index]
-                                        .concepts![innerIndex])) {
-                                  basicController
-                                      .topicDataList[index].selectedConcepts
-                                      .removeWhere((element) =>
-                                          element ==
-                                          basicController.topicDataList[index]
-                                              .concepts![innerIndex]);
-                                } else {
-                                  basicController
-                                      .topicDataList[index].selectedConcepts
-                                      .add(basicController.topicDataList[index]
-                                          .concepts![innerIndex]);
-                                }
-                                print(
-                                    "${basicController.topicDataList[index].concepts![innerIndex].toString()} tapped");
-                              },
+                          child: Theme(
+                            data: ThemeData().copyWith(
+                              dividerColor: Colors.transparent,
+                            ),
+                            child: ExpansionTile(
                               leading: Obx(() => Checkbox(
-                                  value: basicController
-                                      .topicDataList[index].selectedConcepts
-                                      .contains(basicController
-                                          .topicDataList[index]
-                                          .concepts![innerIndex]),
-                                  onChanged: (isClicked) {
+                                    value: basicController.topicDataList[index]
+                                        .titleChecked.value,
+                                    onChanged: (val) {
+                                      basicController.topicDataList[index]
+                                          .titleChecked.value = val!;
+                                      if (val) {
+                                        basicController.topicDataList[index]
+                                            .selectedConcepts
+                                            .clear();
+                                        basicController.topicDataList[index]
+                                            .selectedConcepts
+                                            .addAll(basicController
+                                                .topicDataList[index]
+                                                .concepts!);
+                                      } else {
+                                        basicController.topicDataList[index]
+                                            .selectedConcepts
+                                            .clear();
+                                      }
+                                    },
+                                  )),
+                              title: Row(
+                                children: [
+                                  Text(basicController
+                                      .topicDataList[index].topicName
+                                      .toString())
+                                ],
+                              ),
+                              children: List.generate(
+                                  basicController.topicDataList[index].concepts!
+                                      .length, (innerIndex) {
+                                return ListTile(
+                                  contentPadding: EdgeInsets.only(left: 40.w),
+                                  onTap: () {
                                     if (basicController
                                         .topicDataList[index].selectedConcepts
                                         .contains(basicController
@@ -220,15 +192,47 @@ class _NewTestScreenCreationScreenState
                                               .topicDataList[index]
                                               .concepts![innerIndex]);
                                     }
-                                  })),
-                              title: Text(basicController
-                                  .topicDataList[index].concepts![innerIndex]
-                                  .toString()),
-                            );
-                          }),
-                        ),
-                      );
-                    },
+                                    print(
+                                        "${basicController.topicDataList[index].concepts![innerIndex].toString()} tapped");
+                                  },
+                                  leading: Obx(() => Checkbox(
+                                      value: basicController
+                                          .topicDataList[index].selectedConcepts
+                                          .contains(basicController
+                                              .topicDataList[index]
+                                              .concepts![innerIndex]),
+                                      onChanged: (isClicked) {
+                                        if (basicController.topicDataList[index]
+                                            .selectedConcepts
+                                            .contains(basicController
+                                                .topicDataList[index]
+                                                .concepts![innerIndex])) {
+                                          basicController.topicDataList[index]
+                                              .selectedConcepts
+                                              .removeWhere((element) =>
+                                                  element ==
+                                                  basicController
+                                                      .topicDataList[index]
+                                                      .concepts![innerIndex]);
+                                        } else {
+                                          basicController.topicDataList[index]
+                                              .selectedConcepts
+                                              .add(basicController
+                                                  .topicDataList[index]
+                                                  .concepts![innerIndex]);
+                                        }
+                                      })),
+                                  title: Text(basicController
+                                      .topicDataList[index]
+                                      .concepts![innerIndex]
+                                      .toString()),
+                                );
+                              }),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],
@@ -245,6 +249,9 @@ class _NewTestScreenCreationScreenState
                       onPressed: basicController.newTestTitle.value == ''
                           ? () {
                               final snackBar = SnackBar(
+                                duration: const Duration(
+                                  milliseconds: 300,
+                                ),
                                 content: const Text('Test title is missing'),
                                 action: SnackBarAction(
                                   label: 'Enter test title',
