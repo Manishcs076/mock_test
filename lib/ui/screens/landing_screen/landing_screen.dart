@@ -130,7 +130,7 @@ class _LandingScreenState extends State<LandingScreen> {
                         builder: (context, Box box, widget) {
                           if (box.isEmpty) {
                             return const Center(
-                              child: Text('No test create'),
+                              child: Text('No test created'),
                             );
                           } else {
                             return ListView.builder(
